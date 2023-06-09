@@ -65,6 +65,10 @@ public class DespesaService {
         return despesaRepository.findAll(createPrecicateDespesa(despesaFilter), pageable);
     }
 
+    public List<Despesa> findAllSort(String order, String campo){
+        return despesaRepository.findAll(Sort.by(order.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, campo));
+    }
+
     public BigDecimal getValorTotal(DespesaFilter despesaFilter){
         JPAQuery query = new JPAQuery(this.manager);
         QDespesa qDespesa = QDespesa.despesa;
@@ -104,7 +108,6 @@ public class DespesaService {
         JPAQuery submax = new JPAQuery(this.manager);
         JPAQuery submin = new JPAQuery(this.manager);
         QDespesa qDespesa = QDespesa.despesa;
-
 
         query.select(qDespesa.tipoDespesa,
                         qDespesa.valor.sum(),
